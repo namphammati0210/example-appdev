@@ -1,8 +1,10 @@
 var express = require("express");
 var router = express.Router();
 const database = require("../database/models/index");
+const trainer = require("../database/models/trainer");
 const Role = database.db.Role;
 const TrainingStaff = database.db.TrainingStaff;
+const Trainer = database.db.Trainer;
 const Account = database.db.Account;
 
 /* GET home page. */
@@ -42,5 +44,37 @@ router.post("/addStaff", async function (req, res) {
     res.redirect("/admin");
   }
 });
+/* GET create trainer page. */
+router.get("/createTrainer", async function (req, res, next) {
+  const trainerRole = await Role.findOne({
+    where: {
+      name: "trainer",
+    },
+  });
+  res.render("trainer_view/create", { trainerRole: trainerRole });
+});
 
+router.post("/addTrainer", async function (req, res) {
+  const {fullname,specialty,age,address,email,username,password,roleId} =
+    req.body;
+
+  const trainer = await Trainer.create({
+    fullname,
+    specialty,
+    age,
+    address,
+    email, 
+  });
+
+  if (trainer) {
+    await Account.create({
+      username,
+      password,
+      roleId,
+      userId: trainer.dataValues.id,
+    });
+
+    res.redirect("/admin");
+  }
+});
 module.exports = router;
