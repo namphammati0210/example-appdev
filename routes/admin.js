@@ -8,8 +8,27 @@ const Trainer = database.db.Trainer;
 const Account = database.db.Account;
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.send("hello admin");
+router.get("/", async function (req, res, next) {
+  const accounts = await Account.findAll({
+    include: Role
+  });
+
+  const staffAccounts = accounts.filter(account => account.Role.name === 'trainingStaff');
+  const trainerAccounts = accounts.filter(account => account.Role.name === 'trainer');
+
+  // const staffAccounts = await Account.findAll({
+  //   include: [{
+  //     model: Role,
+  //     attributes: ['id', 'name'],
+  //     where: {
+  //       name: 'trainingStaff'
+  //     },
+  //     required: false
+  //   }],
+    
+  // });
+  
+  res.render('admin_view/index', {staffAccounts, trainerAccounts})
 });
 
 /* GET create staff page. */
