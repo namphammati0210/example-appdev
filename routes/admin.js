@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 const database = require("../database/models/index");
-const trainer = require("../database/models/trainer");
 const Role = database.db.Role;
 const TrainingStaff = database.db.TrainingStaff;
 const Trainer = database.db.Trainer;
@@ -59,16 +58,48 @@ const getUserByRole = async (roleName, userId) => {
   
 }
 
-/* GET home page. */
+const getAccountById = async (accountId) => {
+  const account = await Account.findOne({
+    where: {
+      id: accountId
+    },
+    include: Role
+  })
+
+  return account;
+}
+
+const deleteUserByRole = async(roleName, userId) => {
+  let result;
+
+  switch(roleName)  {
+    case 'trainingStaff': {
+      result = await TrainingStaff.destroy({
+        where: {
+          id: userId
+        }
+      })
+      return result;
+    }
+    case 'trainer': {
+      result = await Trainer.destroy({
+        where: {
+          id: userId
+        }
+      })
+      return result;
+    }
+    default: {
+      res.send('Not found any user')
+    }
+  }
+}
+
+/* GET account page. */
 router.get("/viewAccount", async function (req, res, next) {
   try {
     const {id} = req.query;
-    const account = await Account.findOne({
-      where: {
-        id
-      },
-      include: Role
-    })
+    const account = await getAccountById(id);
 
     const user = await getUserByRole(account.Role.name, account.userId);
     const accountDetail = {...account.dataValues, User: user};
@@ -80,6 +111,27 @@ router.get("/viewAccount", async function (req, res, next) {
   }
   
 });
+
+/* GET delete account. */
+router.get("/deleteAccount", async (req, res) => {
+  try {
+    const {id} = req.query;
+    const account = await getAccountById(id);
+    const result = await deleteUserByRole(account.Role.name, account.userId);
+    await Account.destroy({
+      where: {
+        id
+      }
+    })
+    if(result) {
+      res.redirect('/admin');
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: admin.js ~ line 90 ~ router.get ~ error", error);
+    res.redirect('/admin')
+  }
+
+})
 
 /* GET create staff page. */
 router.get("/createStaff", async function (req, res, next) {
@@ -113,6 +165,7 @@ router.post("/addStaff", async function (req, res) {
     res.redirect("/admin");
   }
 });
+
 /* GET create trainer page. */
 router.get("/createTrainer", async function (req, res, next) {
   const trainerRole = await Role.findOne({
