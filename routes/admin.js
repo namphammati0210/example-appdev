@@ -14,20 +14,13 @@ router.get("/", async function (req, res, next) {
 
   const staffAccounts = accounts.filter(account => account.Role.name === 'trainingStaff');
   const trainerAccounts = accounts.filter(account => account.Role.name === 'trainer');
-
-  // const staffAccounts = await Account.findAll({
-  //   include: [{
-  //     model: Role,
-  //     attributes: ['id', 'name'],
-  //     where: {
-  //       name: 'trainingStaff'
-  //     },
-  //     required: false
-  //   }],
-    
-  // });
   
-  res.render('admin_view/index', {staffAccounts, trainerAccounts})
+  res.render('template/master', {
+    content: '../admin_view/index',
+    heading: 'Admin Dashboard',
+    staffAccounts,
+    trainerAccounts,
+  })
 });
 
 const getUserByRole = async (roleName, userId) => {
@@ -140,7 +133,12 @@ router.get("/createStaff", async function (req, res, next) {
       name: "trainingStaff",
     },
   });
-  res.render("trainingStaff_view/create", { staffRole: staffRole });
+
+  res.render('template/master', {
+    content: '../trainingStaff_view/create',
+    heading: 'Create Training Staff account',
+    staffRole
+  })
 });
 
 router.post("/addStaff", async function (req, res) {
@@ -173,7 +171,12 @@ router.get("/createTrainer", async function (req, res, next) {
       name: "trainer",
     },
   });
-  res.render("trainer_view/create", { trainerRole: trainerRole });
+ 
+  res.render('template/master', {
+    content: '../trainer_view/create',
+    heading: 'Create trainer account',
+    trainerRole
+  })
 });
 
 router.post("/addTrainer", async function (req, res) {
