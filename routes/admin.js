@@ -31,6 +31,56 @@ router.get("/", async function (req, res, next) {
   res.render('admin_view/index', {staffAccounts, trainerAccounts})
 });
 
+const getUserByRole = async (roleName, userId) => {
+  let user;
+
+  switch(roleName)  {
+    case 'trainingStaff': {
+      user = await TrainingStaff.findOne({
+        where: {
+          id: userId
+        }
+      })
+      return user;
+    }
+    case 'trainer': {
+      await Trainer.findOne({
+        where: {
+          id: userId
+        }
+      })
+
+      return user;
+    }
+    default: {
+      res.send('Not found any user')
+    }
+  }
+  
+}
+
+/* GET home page. */
+router.get("/viewAccount", async function (req, res, next) {
+  try {
+    const {id} = req.query;
+    const account = await Account.findOne({
+      where: {
+        id
+      },
+      include: Role
+    })
+
+    const user = await getUserByRole(account.Role.name, account.userId);
+    const accountDetail = {...account.dataValues, User: user};
+
+    res.send(accountDetail);
+  } catch (error) {
+    console.log("🚀 ~ file: admin.js ~ line 80 ~ error", error)
+    res.redirect('/admin')
+  }
+  
+});
+
 /* GET create staff page. */
 router.get("/createStaff", async function (req, res, next) {
   const staffRole = await Role.findOne({
