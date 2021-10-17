@@ -18,7 +18,12 @@ router.get("/createTrainee", async function (req, res, next) {
       name: "trainee",
     },
   });
-  res.render("trainee_view/create", { traineeRole: traineeRole });
+
+  res.render('template/master', {
+    content: '../trainee_view/create',
+    heading: 'Create trainee account',
+    traineeRole
+  })
 });
 
 router.post("/addTrainee", async function (req, res) {
