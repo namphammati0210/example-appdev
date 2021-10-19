@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Course.belongsTo(models.CourseCategory, {
+        foreignKey: 'courseCategoryId',
+        onDelete: 'CASCADE'
+      })
     }
   };
   Course.init({
