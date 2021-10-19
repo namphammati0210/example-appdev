@@ -1,0 +1,44 @@
+<form action="/trainingStaff/addCourse" method="POST">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="exampleInputEmail1"
+      aria-describedby="emailHelp"
+      name="name"
+      required
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Description</label>
+    <input
+      type="text"
+      class="form-control"
+      id="exampleInputPassword1"
+      name="description"
+      required
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label"
+      >Course Category</label
+    >
+    <select
+      class="form-control"
+      id="exampleFormControlSelect1"
+      name="courseCategoryId"
+    >
+      <option>Choose one course category</option>
+      <% courseCategories.forEach(function(courseCategory) { %>
+      <option value="<%= courseCategory.id%>">
+        <%= courseCategory.name %>
+      </option>
+      <% }); %>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

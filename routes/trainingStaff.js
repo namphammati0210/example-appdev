@@ -6,6 +6,7 @@ const Role = database.db.Role;
 const Trainee = database.db.Trainee;
 const Account = database.db.Account;
 const CourseCategory = database.db.CourseCategory;
+const Course = database.db.Course;
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -68,6 +69,26 @@ router.post("/addCourseCategory", async function (req, res) {
     res.redirect("/trainingStaff");
 
 });
+/* GET create course page. */
+router.get("/createCourse", async function (req, res, next) {
+  const courseCategories = await CourseCategory.findAll();
+  res.render('template/master', {
+    content: '../course_view/create',
+    heading: 'Create Course',
+    courseCategories,
+  })
+});
 
+router.post("/addCourse", async function (req, res) {
+  const { name, description, courseCategoryId} = req.body;
+  const course = await Course.create({
+    name,
+    description,
+    courseCategoryId,
+  });
+
+    res.redirect("/trainingStaff");
+
+});
 module.exports = router;
 
