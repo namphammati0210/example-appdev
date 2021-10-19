@@ -5,6 +5,7 @@ const trainee = require("../database/models/trainee");
 const Role = database.db.Role;
 const Trainee = database.db.Trainee;
 const Account = database.db.Account;
+const CourseCategory = database.db.CourseCategory;
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -48,6 +49,24 @@ router.post("/addTrainee", async function (req, res) {
 
     res.redirect("/trainingStaff");
   }
+});
+/* GET create course category page. */
+router.get("/createCourseCategory", async function (req, res, next) {
+  res.render('template/master', {
+    content: '../courseCategory_view/create',
+    heading: 'Create Course Category',
+  })
+});
+
+router.post("/addCourseCategory", async function (req, res) {
+  const { name, description} = req.body;
+  const courseCategory = await CourseCategory.create({
+    name,
+    description,
+  });
+
+    res.redirect("/trainingStaff");
+
 });
 
 module.exports = router;
