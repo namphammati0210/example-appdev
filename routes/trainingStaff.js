@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 const database = require("../database/models/index");
-const trainee = require("../database/models/trainee");
 const Role = database.db.Role;
 const Trainee = database.db.Trainee;
 const Account = database.db.Account;
@@ -9,12 +8,30 @@ const CourseCategory = database.db.CourseCategory;
 const Course = database.db.Course;
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.send("hello training staff");
+router.get("/", async function (req, res) {
+  const traineeAccounts = await Account.findAll({
+    include: {
+      model: Role,
+      where: {
+        name: 'trainee'
+      }
+    }
+  });
+
+  const courseCategories = await CourseCategory.findAll();
+  const courses = await Course.findAll();
+
+  res.render('template/master', {
+    content: '../trainingStaff_view/index',
+    heading: 'Training Staff Dashboard',
+    traineeAccounts,
+    courseCategories,
+    courses
+  })
 });
 
 /* GET create trainee page. */
-router.get("/createTrainee", async function (req, res, next) {
+router.get("/createTrainee", async function (req, res) {
   const traineeRole = await Role.findOne({
     where: {
       name: "trainee",
@@ -52,7 +69,7 @@ router.post("/addTrainee", async function (req, res) {
   }
 });
 /* GET create course category page. */
-router.get("/createCourseCategory", async function (req, res, next) {
+router.get("/createCourseCategory", async function (req, res) {
   res.render('template/master', {
     content: '../courseCategory_view/create',
     heading: 'Create Course Category',
@@ -70,7 +87,7 @@ router.post("/addCourseCategory", async function (req, res) {
 
 });
 /* GET create course page. */
-router.get("/createCourse", async function (req, res, next) {
+router.get("/createCourse", async function (req, res) {
   const courseCategories = await CourseCategory.findAll();
   res.render('template/master', {
     content: '../course_view/create',
