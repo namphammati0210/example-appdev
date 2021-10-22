@@ -1,4 +1,3 @@
-
   <div class="container-fluid">
     <div class="card shadow mb-4">
       <div class="card-header py-3">
@@ -7,9 +6,9 @@
         </h6>
       </div>
       <div class="card-body">
-        <a href="/admin/createStaff">
+        <a href="/trainingStaff/createTrainee">
           <button type="button" class="btn btn-primary btn-sm">
-            <i class="fas fa-plus-circle"></i> Trainee account
+            <i class="fas fa-plus-circle"></i>Trainee account
           </button>
         </a>
         <div class="table-responsive">
@@ -31,7 +30,7 @@
               </tr>
             </thead>
             <tbody>
-              <% staffAccounts.forEach(function(account) { %>
+              <% traineeAccounts.forEach(function(account) { %>
               <tr>
                 <th scope="row"><%= account.id %></th>
                 <td><%= account.username %></td>
@@ -72,65 +71,5 @@
         </div>
       </div>
     </div>
-
-    <div class="card shadow mb-4">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
-          Trainer accounts
-        </h6>
-      </div>
-      <div class="card-body">
-        <a href="/admin/createTrainer">
-          <button type="button" class="btn btn-primary btn-sm">
-            <i class="fas fa-plus-circle"></i> Trainer account
-          </button>
-        </a>
-        <div class="table-responsive">
-          <table
-            class="table table-bordered"
-            id="dataTable"
-            width="100%"
-            cellspacing="0"
-          >
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">username</th>
-                <th scope="col">Created At</th>
-                <th scope="col">Updated At</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% trainerAccounts.forEach(function(account) { %>
-              <tr>
-                <th scope="row"><%= account.id %></th>
-                <td><%= account.username %></td>
-                <td><%= account.createdAt %></td>
-                <td><%= account.updatedAt %></td>
-  
-                <td>
-                  <div>
-                    <a href="">
-                      <button type="button" class="btn btn-primary btn-sm">
-                        <i class="fas fa-user-edit"></i> Update
-                      </button>
-                    </a>
-                  </div>
-                  <div>
-                    <a href="">
-                      <button type="button" class="btn btn-secondary btn-sm">
-                        <i class="fas fa-user-minus"></i> Delete
-                      </button>
-                    </a>
-                  </div>
-                </td>
-              </tr>
-              <% }); %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    
   </div>
-
