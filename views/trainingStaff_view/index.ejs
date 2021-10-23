@@ -1,8 +1,9 @@
   <div class="container-fluid">
+    <!-- Trainee section -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">
-          Trainees account
+          Trainee accounts
         </h6>
       </div>
       <div class="card-body">
@@ -71,5 +72,134 @@
         </div>
       </div>
     </div>
+    <!-- End Trainee section -->
+
+    <!-- Course category section -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+          Course Categories
+        </h6>
+      </div>
+      <div class="card-body">
+        <a href="/trainingStaff/createCourseCategory">
+          <button type="button" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus-circle"></i>Course category
+          </button>
+        </a>
+        <div class="table-responsive">
+          <table
+            class="table table-bordered"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% courseCategories.forEach(function(category) { %>
+              <tr>
+                <th scope="row"><%= category.id %></th>
+                <td><%= category.name %></td>
+                <td><%= category.description %></td>
+                
+                <td>
+                  <div>
+                    <a href="">
+                      <button type="button" class="btn btn-primary btn-sm">
+                        <i class="fas fa-user-edit"></i> Update
+                      </button>
+                    </a>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <a href="">
+                      <button type="button" class="btn btn-danger btn-sm">
+                        <i class="fas fa-user-minus"></i> Delete
+                      </button>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- End Course category section -->
+
+    <!-- Course section -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+          Courses
+        </h6>
+      </div>
+      <div class="card-body">
+        <a href="/trainingStaff/createCourse">
+          <button type="button" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus-circle"></i>Course
+          </button>
+        </a>
+        <div class="table-responsive">
+          <table
+            class="table table-bordered"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Category</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% courses.forEach(function(course) { %>
+              <tr>
+                <th scope="row"><%= course.id %></th>
+                <td><%= course.name %></td>
+                <td><%= course.description %></td>
+                <td><%= course.CourseCategory.name %></td>
+                
+                <td>
+                  <div>
+                    <a href="">
+                      <button type="button" class="btn btn-primary btn-sm">
+                        <i class="fas fa-user-edit"></i> Update
+                      </button>
+                    </a>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <a href="">
+                      <button type="button" class="btn btn-danger btn-sm">
+                        <i class="fas fa-user-minus"></i> Delete
+                      </button>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- End Course section -->
     
   </div>
