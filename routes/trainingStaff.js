@@ -19,7 +19,9 @@ router.get("/", async function (req, res) {
   });
 
   const courseCategories = await CourseCategory.findAll();
-  const courses = await Course.findAll();
+  const courses = await Course.findAll({
+    include: CourseCategory
+  });
 
   res.render('template/master', {
     content: '../trainingStaff_view/index',
