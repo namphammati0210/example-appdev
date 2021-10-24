@@ -6,6 +6,8 @@ const Trainee = database.db.Trainee;
 const Account = database.db.Account;
 const CourseCategory = database.db.CourseCategory;
 const Course = database.db.Course;
+const Trainer = database.db.Trainer;
+const TrainerCourse = database.db.TrainerCourse;
 
 /* GET home page. */
 router.get("/", async function (req, res) {
@@ -17,18 +19,21 @@ router.get("/", async function (req, res) {
       }
     }
   });
-
   const courseCategories = await CourseCategory.findAll();
   const courses = await Course.findAll({
     include: CourseCategory
   });
+  const trainerCourses = await TrainerCourse.findAll({
+    include: [Trainer, Course]
+  })
 
   res.render('template/master', {
     content: '../trainingStaff_view/index',
     heading: 'Training Staff Dashboard',
     traineeAccounts,
     courseCategories,
-    courses
+    courses,
+    trainerCourses
   })
 });
 
@@ -109,5 +114,36 @@ router.post("/addCourse", async function (req, res) {
     res.redirect("/trainingStaff");
 
 });
+
+
+// ================= Assign Trainer ===================
+router.get("/assignTrainer", async (req, res) => {
+  const trainers = await Trainer.findAll();
+  const courses = await Course.findAll();
+
+  res.render('template/master', {
+    content: '../trainer_view/assign',
+    heading: 'Assign trainer',
+    trainers,
+    courses,
+  })
+
+})
+
+router.post("/assignTrainer", async (req, res) => {
+  try {
+    const {trainerId, courseId} = req.body;
+    // res.send(`${trainerId}, ${courseId}`);
+    const result = await TrainerCourse.create({
+      trainerId,
+      courseId
+    })
+
+    res.redirect('/trainingStaff')
+
+  } catch (error) {
+    console.log("🚀 ~ file: trainingStaff.js ~ line 133 ~ router.post ~ error", error)
+  }
+})
 module.exports = router;
 
