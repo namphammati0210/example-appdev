@@ -1,0 +1,120 @@
+
+    
+      <form action="/trainingStaff/editTrainee" method="POST">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            name="username"
+            value="<%= traineeData.username %>"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="exampleInputPassword1"
+            name="password"
+            value="<%= traineeData.password %>"
+            required
+          />
+        </div>
+
+        <div class="mb-3" style="display: none">
+          <label for="exampleInputPassword1" class="form-label">Account Id</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputPassword1"
+            name="accountId"
+            value="<%= traineeData.accountId %>"
+            required
+          />
+        </div>
+
+        <div class="mb-3" style="display: none">
+          <label for="exampleInputPassword1" class="form-label">Trainee Id</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputPassword1"
+            name="traineeId"
+            value="<%= traineeData.id %>"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Fullname</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputPassword1"
+            name="fullname"
+            value="<%= traineeData.fullname %>"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label"
+            >Education</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputPassword1"
+            name="education"
+            value="<%= traineeData.education %>"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label"
+            >Date of birth</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputPassword1"
+            name="dateOfBirth"
+            value="<%= traineeData.dateOfBirth %>"
+            required
+          />
+        </div>
+        
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Age</label>
+          <input
+            type="number"
+            class="form-control"
+            id="exampleInputPassword1"
+            name="age"
+            value="<%= traineeData.age %>"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="exampleInputPassword1"
+            name="email"
+            value="<%= traineeData.email %>"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    
+

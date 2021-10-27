@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const database = require("../database/models/index");
+const { Op } = require("sequelize");
 const Role = database.db.Role;
 const Trainee = database.db.Trainee;
 const Account = database.db.Account;
@@ -37,6 +38,8 @@ router.get("/", async function (req, res) {
   })
 });
 
+
+// ================= Trainee =================== //
 /* GET create trainee page. */
 router.get("/createTrainee", async function (req, res) {
   const traineeRole = await Role.findOne({
@@ -75,6 +78,53 @@ router.post("/addTrainee", async function (req, res) {
     res.redirect("/trainingStaff");
   }
 });
+
+router.get('/updateTrainee/:id', async (req, res) => {
+  const {id} = req.params;
+  const traineeAccount = await Account.findOne({
+    where: {
+      id
+    },
+    include: Role
+  });
+
+  const {id: accountId, username, password} = traineeAccount;
+
+  const traineeInfo = await Trainee.findOne({
+    where: {
+      id: traineeAccount.userId
+    }
+  })
+
+  const traineeData = {...traineeInfo.dataValues, username, password, accountId}; // destructuring ES6
+  // res.send(traineeData);
+  res.render('template/master', {
+    content: '../trainee_view/update',
+    heading: 'Update trainee profile',
+    traineeData
+  })
+})
+
+router.post("/editTrainee", async (req, res) => {
+  // res.send(req.body)
+  const {accountId, username, password, traineeId, fullname, education, dateOfBirth, age, email} = req.body;
+  const updatedAccount = await Account.update({ username, password }, {
+    where: {
+      id: accountId
+    }
+  });
+
+  const updatedTrainee = await Trainee.update({ fullname, education, dateOfBirth, age, email}, {
+    where: {
+      id: traineeId
+    }
+  });
+
+  res.redirect('/trainingStaff');
+
+})
+// ================= End Trainee =================== //
+
 /* GET create course category page. */
 router.get("/createCourseCategory", async function (req, res) {
   res.render('template/master', {
@@ -116,7 +166,7 @@ router.post("/addCourse", async function (req, res) {
 });
 
 
-// ================= Assign Trainer ===================
+// ================= Assign Trainer =================== //
 router.get("/assignTrainer", async (req, res) => {
   const trainers = await Trainer.findAll();
   const courses = await Course.findAll();
@@ -144,6 +194,26 @@ router.post("/assignTrainer", async (req, res) => {
   } catch (error) {
     console.log("🚀 ~ file: trainingStaff.js ~ line 133 ~ router.post ~ error", error)
   }
+})
+
+router.get("/removeTrainerTask/:trainerId/:courseId", async (req, res) => {
+  const {trainerId, courseId} = req.params;
+  // res.send(`trainerId: ${trainerId}, courseId: ${courseId}`)
+
+  // await TrainerCourse.destroy({
+  //   where: {
+  //     [Op.and]: [{ trainerId: trainerId }, { courseId: courseId }],
+  //   }
+  // })
+
+  await TrainerCourse.destroy({
+    where: {
+      trainerId: trainerId,
+      courseId: courseId
+    }
+  })
+
+  res.redirect('/trainingStaff');
 })
 module.exports = router;
 
