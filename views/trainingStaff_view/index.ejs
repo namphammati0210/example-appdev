@@ -41,7 +41,7 @@
                 
                 <td>
                   <div>
-                    <a href="/admin/viewAccount?id=<%= account.id %>">
+                    <a href="">
                       <button type="button" class="btn btn-success btn-sm">
                         <i class="fas fa-user-edit"></i> View
                       </button>
@@ -50,7 +50,7 @@
                 </td>
                 <td>
                   <div>
-                    <a href="">
+                    <a href="/trainingStaff/updateTrainee/<%= account.id %>">
                       <button type="button" class="btn btn-primary btn-sm">
                         <i class="fas fa-user-edit"></i> Update
                       </button>
@@ -59,7 +59,7 @@
                 </td>
                 <td>
                   <div>
-                    <a href="/admin/deleteAccount?id=<%= account.id %>">
+                    <a href="">
                       <button type="button" class="btn btn-danger btn-sm">
                         <i class="fas fa-user-minus"></i> Delete
                       </button>
@@ -225,8 +225,7 @@
             cellspacing="0"
           >
             <thead>
-              <tr>
-                
+              <tr>               
                 <th scope="col">Trainer</th>
                 <th scope="col">Course</th>
                 <th scope="col">Delete</th>
@@ -239,7 +238,7 @@
                 <td><%= trainerCourse.Course.name %></td>
                 <td>
                   <div>
-                    <a href="">
+                    <a href="/trainingStaff/removeTrainerTask/<%= trainerCourse.trainerId%>/<%= trainerCourse.courseId%>">
                       <button type="button" class="btn btn-danger btn-sm">
                         <i class="fas fa-user-minus"></i> Delete
                       </button>
