@@ -6,6 +6,7 @@ const Role = database.db.Role;
 const Trainee = database.db.Trainee;
 const Account = database.db.Account;
 const AccountController = require("../controllers/account_controller");
+const CourseController = require("../controllers/course_controller");
 const CourseCategory = database.db.CourseCategory;
 const Course = database.db.Course;
 const Trainer = database.db.Trainer;
@@ -189,6 +190,10 @@ router.post("/addCourse", async function (req, res) {
     courseCategoryId,
   });
 
+  res.redirect("/trainingStaff");
+});
+
+router.get("/deleteCourse", CourseController.deleteCourse, (req, res) => {
   res.redirect("/trainingStaff");
 });
 
