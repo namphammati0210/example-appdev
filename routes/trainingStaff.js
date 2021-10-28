@@ -256,4 +256,7 @@ router.get("/removeTrainerTask/:trainerId/:courseId", async (req, res) => {
 
   res.redirect("/trainingStaff");
 });
+
+// ================= Assign Trainee =================== //
+
 module.exports = router;
