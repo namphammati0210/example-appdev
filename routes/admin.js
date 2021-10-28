@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const database = require("../database/models/index");
+const AccountController = require("../controllers/account_controller");
 const Role = database.db.Role;
 const TrainingStaff = database.db.TrainingStaff;
 const Trainer = database.db.Trainer;
@@ -9,122 +10,71 @@ const Account = database.db.Account;
 /* GET home page. */
 router.get("/", async function (req, res, next) {
   const accounts = await Account.findAll({
-    include: Role
+    include: Role,
   });
 
-  const staffAccounts = accounts.filter(account => account.Role.name === 'trainingStaff');
-  const trainerAccounts = accounts.filter(account => account.Role.name === 'trainer');
-  
-  res.render('template/master', {
-    content: '../admin_view/index',
-    heading: 'Admin Dashboard',
+  const staffAccounts = accounts.filter(
+    (account) => account.Role.name === "trainingStaff"
+  );
+  const trainerAccounts = accounts.filter(
+    (account) => account.Role.name === "trainer"
+  );
+
+  res.render("template/master", {
+    content: "../admin_view/index",
+    heading: "Admin Dashboard",
     staffAccounts,
     trainerAccounts,
-  })
+  });
 });
 
 const getUserByRole = async (roleName, userId) => {
   let user;
 
-  switch(roleName)  {
-    case 'trainingStaff': {
+  switch (roleName) {
+    case "trainingStaff": {
       user = await TrainingStaff.findOne({
         where: {
-          id: userId
-        }
-      })
+          id: userId,
+        },
+      });
       return user;
     }
-    case 'trainer': {
+    case "trainer": {
       await Trainer.findOne({
         where: {
-          id: userId
-        }
-      })
+          id: userId,
+        },
+      });
 
       return user;
     }
     default: {
-      res.send('Not found any user')
+      res.send("Not found any user");
     }
   }
-  
-}
-
-const getAccountById = async (accountId) => {
-  const account = await Account.findOne({
-    where: {
-      id: accountId
-    },
-    include: Role
-  })
-
-  return account;
-}
-
-const deleteUserByRole = async(roleName, userId) => {
-  let result;
-
-  switch(roleName)  {
-    case 'trainingStaff': {
-      result = await TrainingStaff.destroy({
-        where: {
-          id: userId
-        }
-      })
-      return result;
-    }
-    case 'trainer': {
-      result = await Trainer.destroy({
-        where: {
-          id: userId
-        }
-      })
-      return result;
-    }
-    default: {
-      res.send('Not found any user')
-    }
-  }
-}
+};
 
 /* GET account page. */
 router.get("/viewAccount", async function (req, res, next) {
   try {
-    const {id} = req.query;
+    const { id } = req.query;
     const account = await getAccountById(id);
 
     const user = await getUserByRole(account.Role.name, account.userId);
-    const accountDetail = {...account.dataValues, User: user};
+    const accountDetail = { ...account.dataValues, User: user };
 
     res.send(accountDetail);
   } catch (error) {
-    console.log("🚀 ~ file: admin.js ~ line 80 ~ error", error)
-    res.redirect('/admin')
+    console.log("🚀 ~ file: admin.js ~ line 80 ~ error", error);
+    res.redirect("/admin");
   }
-  
 });
 
 /* GET delete account. */
-router.get("/deleteAccount", async (req, res) => {
-  try {
-    const {id} = req.query;
-    const account = await getAccountById(id);
-    const result = await deleteUserByRole(account.Role.name, account.userId);
-    await Account.destroy({
-      where: {
-        id
-      }
-    })
-    if(result) {
-      res.redirect('/admin');
-    }
-  } catch (error) {
-    console.log("🚀 ~ file: admin.js ~ line 90 ~ router.get ~ error", error);
-    res.redirect('/admin')
-  }
-
-})
+router.get("/deleteAccount", AccountController.deleteAccount, (req, res) => {
+  res.redirect("/admin");
+});
 
 /* GET create staff page. */
 router.get("/createStaff", async function (req, res, next) {
@@ -134,11 +84,11 @@ router.get("/createStaff", async function (req, res, next) {
     },
   });
 
-  res.render('template/master', {
-    content: '../trainingStaff_view/create',
-    heading: 'Create Training Staff account',
-    staffRole
-  })
+  res.render("template/master", {
+    content: "../trainingStaff_view/create",
+    heading: "Create Training Staff account",
+    staffRole,
+  });
 });
 
 router.post("/addStaff", async function (req, res) {
@@ -171,24 +121,32 @@ router.get("/createTrainer", async function (req, res, next) {
       name: "trainer",
     },
   });
- 
-  res.render('template/master', {
-    content: '../trainer_view/create',
-    heading: 'Create trainer account',
-    trainerRole
-  })
+
+  res.render("template/master", {
+    content: "../trainer_view/create",
+    heading: "Create trainer account",
+    trainerRole,
+  });
 });
 
 router.post("/addTrainer", async function (req, res) {
-  const {fullname,specialty,age,address,email,username,password,roleId} =
-    req.body;
+  const {
+    fullname,
+    specialty,
+    age,
+    address,
+    email,
+    username,
+    password,
+    roleId,
+  } = req.body;
 
   const trainer = await Trainer.create({
     fullname,
     specialty,
     age,
     address,
-    email, 
+    email,
   });
 
   if (trainer) {
