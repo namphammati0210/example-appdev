@@ -267,4 +267,54 @@
     </div>
   </div>
   <!-- End Trainer Course section -->
+
+  <!-- Trainee course section -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Trainee's tasks</h6>
+    </div>
+    <div class="card-body">
+      <a href="/trainingStaff/assignTrainee">
+        <button type="button" class="btn btn-primary btn-sm">
+          <i class="fas fa-plus-circle"></i> Assign Course
+        </button> </a
+      ><br /><br />
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          id="dataTable3"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th scope="col">Trainee</th>
+              <th scope="col">Course</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% traineeCourses.forEach(function(traineeCourse) { %>
+            <tr>
+              <td><%= traineeCourse.Trainee.fullname %></td>
+              <td><%= traineeCourse.Course.name %></td>
+              <td>
+                <div>
+                  <a
+                    href="/trainingStaff/removeTraineeTask/<%= traineeCourse.traineeId%>/<%= traineeCourse.courseId%>"
+                  >
+                    <button type="button" class="btn btn-danger btn-sm">
+                      <i class="fas fa-user-minus"></i> Delete
+                    </button>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- End Trainee Course section -->
 </div>

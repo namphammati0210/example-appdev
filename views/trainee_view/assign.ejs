@@ -1,0 +1,39 @@
+
+    
+    
+      <form action="/trainingStaff/assignTrainee" method="POST">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Trainee</label>
+          <select
+            class="form-control"
+            id="exampleFormControlSelect1"
+            name="traineeId"
+          >
+            <% trainees.forEach(function(trainee) { %>
+            <option value="<%= trainee.id%>">
+              <%= trainee.fullname %>
+            </option>
+            <% }); %>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Course</label>
+          <select
+            class="form-control"
+            id="exampleFormControlSelect1"
+            name="courseId"
+          >
+            <% courses.forEach(function(course) { %>
+            <option value="<%= course.id%>">
+              <%= course.name %>
+            </option>
+            <% }); %>
+          </select>
+        </div>
+
+        
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    
