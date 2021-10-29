@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 const database = require("../database/models/index");
-const { Op } = require("sequelize");
 const Role = database.db.Role;
 const Trainee = database.db.Trainee;
 const Account = database.db.Account;
@@ -12,6 +11,7 @@ const CourseCategory = database.db.CourseCategory;
 const Course = database.db.Course;
 const Trainer = database.db.Trainer;
 const TrainerCourse = database.db.TrainerCourse;
+const TraineeCourse = database.db.TraineeCourse;
 
 /* GET home page. */
 router.get("/", async function (req, res) {
@@ -31,6 +31,12 @@ router.get("/", async function (req, res) {
     include: [Trainer, Course],
   });
 
+  // const traineeCourses = [];
+
+  const traineeCourses = await TraineeCourse.findAll({
+    include: [Trainee, Course],
+  });
+
   res.render("template/master", {
     content: "../trainingStaff_view/index",
     heading: "Training Staff Dashboard",
@@ -38,6 +44,7 @@ router.get("/", async function (req, res) {
     courseCategories,
     courses,
     trainerCourses,
+    traineeCourses
   });
 });
 
@@ -119,9 +126,11 @@ router.get("/updateTrainee/:id", async (req, res) => {
     traineeData,
   });
 });
+
 router.get("/deleteAccount", AccountController.deleteAccount, (req, res) => {
   res.redirect("/trainingStaff");
 });
+
 router.post("/editTrainee", async (req, res) => {
   // res.send(req.body)
   const {
@@ -239,13 +248,6 @@ router.post("/assignTrainer", async (req, res) => {
 
 router.get("/removeTrainerTask/:trainerId/:courseId", async (req, res) => {
   const { trainerId, courseId } = req.params;
-  // res.send(`trainerId: ${trainerId}, courseId: ${courseId}`)
-
-  // await TrainerCourse.destroy({
-  //   where: {
-  //     [Op.and]: [{ trainerId: trainerId }, { courseId: courseId }],
-  //   }
-  // })
 
   await TrainerCourse.destroy({
     where: {
@@ -256,7 +258,51 @@ router.get("/removeTrainerTask/:trainerId/:courseId", async (req, res) => {
 
   res.redirect("/trainingStaff");
 });
+// ================= End Assign Trainer =================== //
 
 // ================= Assign Trainee =================== //
+router.get("/assignTrainee", async (req, res) => {
+  const trainees = await Trainee.findAll();
+  const courses = await Course.findAll();
+
+  res.render("template/master", {
+    content: "../trainee_view/assign",
+    heading: "Assign trainee",
+    trainees,
+    courses,
+  });
+});
+
+router.post("/assignTrainee", async (req, res) => {
+  try {
+    const { traineeId, courseId } = req.body;
+    // res.send(`${trainerId}, ${courseId}`);
+    const result = await TraineeCourse.create({
+      traineeId,
+      courseId,
+    });
+
+    res.redirect("/trainingStaff");
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: trainingStaff.js ~ line 133 ~ router.post ~ error",
+      error
+    );
+  }
+});
+
+router.get("/removeTraineeTask/:traineeId/:courseId", async (req, res) => {
+  const { traineeId, courseId } = req.params;
+
+  await TraineeCourse.destroy({
+    where: {
+      traineeId: traineeId,
+      courseId: courseId,
+    },
+  });
+
+  res.redirect("/trainingStaff");
+});
+// ================= End Assign Trainee =================== //
 
 module.exports = router;

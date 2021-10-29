@@ -14,12 +14,17 @@ module.exports = (sequelize, DataTypes) => {
       Course.belongsTo(models.CourseCategory, {
         foreignKey: 'courseCategoryId',
         onDelete: 'CASCADE'
-      })
+      });
 
       Course.hasMany(models.TrainerCourse, {
         foreignKey: 'courseId',
         as: 'courseId'
-      })
+      });
+
+      Course.hasMany(models.TraineeCourse, {
+        foreignKey: 'courseId',
+        as: 'traineeCourseId'
+      });
     }
   };
   Course.init({
