@@ -190,6 +190,37 @@ router.get(
     res.redirect("/trainingStaff");
   }
 );
+
+router.get('/updateCategory/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const category = await CourseCategory.findOne({
+    where: {
+      id
+    }
+  })
+
+  res.render("template/master", {
+    content: "../courseCategory_view/update",
+    heading: "Update Course Category",
+    category
+  });
+})
+
+router.post('/editCategory', async (req, res) => {
+  const { id, name, description } = req.body;
+
+  const updatedCategory = await CourseCategory.update(
+    {name, description},
+    {
+      where: {
+        id
+      }
+    }
+  )
+  
+  res.redirect("/trainingStaff");
+})
 /* GET create course page. */
 router.get("/createCourse", async function (req, res) {
   const courseCategories = await CourseCategory.findAll();
@@ -214,6 +245,41 @@ router.post("/addCourse", async function (req, res) {
 router.get("/deleteCourse", CourseController.deleteCourse, (req, res) => {
   res.redirect("/trainingStaff");
 });
+
+router.get('/updateCourse/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const course = await Course.findOne({
+    include: CourseCategory,
+    where: {
+      id
+    }
+  })
+
+  const categories = await CourseCategory.findAll();
+
+  res.render("template/master", {
+    content: "../course_view/update",
+    heading: "Update Course",
+    course,
+    categories
+  });
+})
+
+router.post('/editCourse', async (req, res) => {
+  const { courseId, name, description, categoryId } = req.body;
+
+  const updatedCourse = await Course.update(
+    {name, description, courseCategoryId: categoryId},
+    {
+      where: {
+        id: courseId
+      }
+    }
+  )
+  
+  res.redirect("/trainingStaff");
+})
 
 // ================= Assign Trainer =================== //
 router.get("/assignTrainer", async (req, res) => {

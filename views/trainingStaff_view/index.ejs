@@ -97,7 +97,6 @@
               <th scope="col">ID</th>
               <th scope="col">Name</th>
               <th scope="col">Description</th>
-              <th scope="col">View</th>
               <th scope="col">Update</th>
               <th scope="col">Delete</th>
             </tr>
@@ -110,18 +109,9 @@
               <td><%= category.description %></td>
               <td>
                 <div>
-                  <a href="">
-                    <button type="button" class="btn btn-success btn-sm">
-                      <i class="fas fa-user-edit"></i> View
-                    </button>
-                  </a>
-                </div>
-              </td>
-              <td>
-                <div>
-                  <a href="">
+                  <a href="/trainingStaff/updateCategory/<%= category.id %>">
                     <button type="button" class="btn btn-primary btn-sm">
-                      <i class="fas fa-user-edit"></i> Update
+                      <i class="fas fa-user-edit"></i> Update 
                     </button>
                   </a>
                 </div>
@@ -170,7 +160,6 @@
               <th scope="col">Name</th>
               <th scope="col">Description</th>
               <th scope="col">Category</th>
-              <th scope="col">View</th>
               <th scope="col">Update</th>
               <th scope="col">Delete</th>
             </tr>
@@ -184,16 +173,7 @@
               <td><%= course.CourseCategory.name %></td>
               <td>
                 <div>
-                  <a href="">
-                    <button type="button" class="btn btn-success btn-sm">
-                      <i class="fas fa-user-edit"></i> View
-                    </button>
-                  </a>
-                </div>
-              </td>
-              <td>
-                <div>
-                  <a href="">
+                  <a href="/trainingStaff/updateCourse/<%= course.id %>">
                     <button type="button" class="btn btn-primary btn-sm">
                       <i class="fas fa-user-edit"></i> Update
                     </button>
