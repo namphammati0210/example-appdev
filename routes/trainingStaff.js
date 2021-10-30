@@ -163,6 +163,16 @@ router.post("/editTrainee", async (req, res) => {
   );
   res.redirect("/trainingStaff");
 });
+
+router.get("/viewAccount", AccountController.getAccount, (req, res) => {
+  console.log("🚀 ~ file: trainingStaff.js ~ line 173 ~ router.get ~ req.account", req.account)
+  res.render("template/master", {
+    content: "../account_view/profile",
+    heading: "Profile",
+    account: req.account
+    
+  });
+});
 // ================= End Trainee =================== //
 
 /* GET create course category page. */

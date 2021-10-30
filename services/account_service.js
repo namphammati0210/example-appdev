@@ -59,8 +59,45 @@ const removeAccount = async (id) => {
   return;
 };
 
+const getUserByRole = async (roleName, userId) => {
+  let user;
+
+  switch (roleName) {
+    case "trainingStaff": {
+      user = await TrainingStaff.findOne({
+        where: {
+          id: userId,
+        },
+      });
+      return user;
+    }
+    case "trainer": {
+      user = await Trainer.findOne({
+        where: {
+          id: userId,
+        },
+      });
+
+      return user;
+    }
+    case "trainee": {
+      user = await Trainee.findOne({
+        where: {
+          id: userId,
+        },
+      });
+
+      return user;
+    }
+    default: {
+      res.send("Not found any user");
+    }
+  }
+};
+
 module.exports = {
   getAccountById,
   deleteUserByRole,
   removeAccount,
+  getUserByRole
 };

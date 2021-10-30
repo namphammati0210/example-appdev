@@ -28,47 +28,13 @@ router.get("/", async function (req, res, next) {
   });
 });
 
-const getUserByRole = async (roleName, userId) => {
-  let user;
-
-  switch (roleName) {
-    case "trainingStaff": {
-      user = await TrainingStaff.findOne({
-        where: {
-          id: userId,
-        },
-      });
-      return user;
-    }
-    case "trainer": {
-      await Trainer.findOne({
-        where: {
-          id: userId,
-        },
-      });
-
-      return user;
-    }
-    default: {
-      res.send("Not found any user");
-    }
-  }
-};
-
 /* GET account page. */
-router.get("/viewAccount", async function (req, res, next) {
-  try {
-    const { id } = req.query;
-    const account = await getAccountById(id);
-
-    const user = await getUserByRole(account.Role.name, account.userId);
-    const accountDetail = { ...account.dataValues, User: user };
-
-    res.send(accountDetail);
-  } catch (error) {
-    console.log("🚀 ~ file: admin.js ~ line 80 ~ error", error);
-    res.redirect("/admin");
-  }
+router.get("/viewAccount", AccountController.getAccount, (req, res) => {
+  res.render("template/master", {
+    content: "../account_view/profile",
+    heading: "Profile",
+    account: req.account
+  });
 });
 
 /* GET delete account. */
