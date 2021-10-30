@@ -114,6 +114,37 @@ router.post("/addStaff", async function (req, res) {
   }
 });
 
+router.get("/updatePassword/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const account = await Account.findOne({
+    where: {
+      id
+    }
+  })
+  
+  res.render("template/master", {
+    content: "../account_view/updatePassword",
+    heading: "Change password",
+    account,
+  });
+})
+
+router.post("/changePassword", async (req, res) => {
+  const { id, password } = req.body;
+
+  const updatedAccount = await Account.update(
+    {password},
+    {
+      where: {
+        id
+      }
+    }
+  )
+
+  res.redirect('/admin')
+})
+
 /* GET create trainer page. */
 router.get("/createTrainer", async function (req, res, next) {
   const trainerRole = await Role.findOne({
