@@ -305,4 +305,47 @@ router.get("/removeTraineeTask/:traineeId/:courseId", async (req, res) => {
 });
 // ================= End Assign Trainee =================== //
 
+// ================= Search Course =================== //
+router.post("/searchCourseInfo", async (req, res) => {
+  
+  const {courseName } = req.body;
+  
+  const trainers = await TrainerCourse.findAll({
+    include: [{
+      model: Course,
+      attributes: ['name'],
+      where: {
+        name: courseName
+      }
+    }, {
+      model: Trainer,
+      attributes: ['fullname']
+    }],
+    attributes: ['trainerId', 'courseId']
+  })
+
+  const trainees = await TraineeCourse.findAll({
+    include: [{
+      model: Course,
+      attributes: ['name'],
+      where: {
+        name: courseName
+      }
+    }, {
+      model: Trainee,
+      attributes: ['fullname']
+    }],
+    attributes: ['traineeId', 'courseId']
+  })
+
+  res.render("template/master", {
+    content: "../trainingStaff_view/search",
+    heading: "Search page",
+    trainers,
+    trainees
+  });
+
+})
+
+
 module.exports = router;
