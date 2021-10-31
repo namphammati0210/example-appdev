@@ -6,9 +6,11 @@ const Role = database.db.Role;
 const TrainingStaff = database.db.TrainingStaff;
 const Trainer = database.db.Trainer;
 const Account = database.db.Account;
+const Admin = database.db.Admin;
 
 /* GET home page. */
 router.get("/", async function (req, res, next) {
+  console.log(req.session.user);
   const accounts = await Account.findAll({
     include: Role,
   });
@@ -157,4 +159,44 @@ router.post("/addTrainer", async function (req, res) {
     res.redirect("/admin");
   }
 });
+
+router.get("/createAdmin", async function (req, res, next) {
+  const adminRole = await Role.findOne({
+    where: {
+      name: "admin",
+    },
+  });
+  console.log("🚀 ~ file: admin.js ~ line 167 ~ adminRole", adminRole)
+
+  res.render("template/master", {
+    content: "../admin_view/create",
+    heading: "Create admin account",
+    adminRole,
+  });
+});
+
+router.post("/addAdmin", async function (req, res) {
+  const {
+    fullname,
+    username,
+    password,
+    roleId,
+  } = req.body;
+
+  const admin = await Admin.create({
+    fullname,
+  });
+
+  if (admin) {
+    await Account.create({
+      username,
+      password,
+      roleId,
+      userId: admin.dataValues.id,
+    });
+
+    res.redirect("/admin");
+  }
+});
+
 module.exports = router;

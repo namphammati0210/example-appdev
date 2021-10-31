@@ -5,6 +5,9 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const database = require("./database/models/index");
 require("dotenv").config();
+const session = require('express-session');
+const {verifyAdmin} = require('./middlewares/admin_auth');
+
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -23,9 +26,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  // saveUninitialized: true,
+  // cookie: { secure: true }
+}))
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/admin", adminRouter);
+app.use("/admin", verifyAdmin, adminRouter);
 app.use("/trainingStaff", trainingStaffRouter);
 app.use("/auth", authRouter);
 
