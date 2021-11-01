@@ -14,6 +14,7 @@ var usersRouter = require("./routes/users");
 var adminRouter = require("./routes/admin");
 var trainingStaffRouter = require("./routes/trainingStaff");
 var authRouter = require("./routes/auth");
+var trainerRouter = require("./routes/trainer");
 var app = express();
 
 // view engine setup
@@ -38,6 +39,7 @@ app.use("/users", usersRouter);
 app.use("/admin", verifyAdmin, adminRouter);
 app.use("/trainingStaff", trainingStaffRouter);
 app.use("/auth", authRouter);
+app.use("/trainer", trainerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
