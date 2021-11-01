@@ -6,10 +6,7 @@ const Role = database.db.Role;
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  // res.render("template/master", {
-  //   content: "../auth_view/login",
-  //   heading: "Search page"
-  // });
+  
   res.render("auth_view/login")
 });
 
@@ -50,6 +47,15 @@ router.post('/login', async (req, res) => {
 
   }
 
+})
+
+router.get('/logout', (req, res) => {
+  req.session.destroy(function(err) {
+    // cannot access session here
+    res.redirect('/auth');
+  })
+  // res.redirect('/auth');
+  
 })
 
 module.exports = router;
