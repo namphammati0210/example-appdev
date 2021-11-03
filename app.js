@@ -6,7 +6,7 @@ var logger = require("morgan");
 const database = require("./database/models/index");
 require("dotenv").config();
 const session = require('express-session');
-const {verifyAdmin} = require('./middlewares/admin_auth');
+
 
 
 var indexRouter = require("./routes/index");
@@ -15,6 +15,8 @@ var adminRouter = require("./routes/admin");
 var trainingStaffRouter = require("./routes/trainingStaff");
 var authRouter = require("./routes/auth");
 var trainerRouter = require("./routes/trainer");
+const { verifyAdmin } = require('./middlewares/admin_auth');
+const { verifyStaff } = require("./middlewares/staff_auth");
 var app = express();
 
 // view engine setup
@@ -36,9 +38,9 @@ app.use(session({
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-// app.use("/admin", verifyAdmin, adminRouter);
-app.use("/admin", adminRouter);
-app.use("/trainingStaff", trainingStaffRouter);
+app.use("/admin", verifyAdmin, adminRouter);
+// app.use("/admin", adminRouter);
+app.use("/trainingStaff", verifyStaff,trainingStaffRouter);
 app.use("/auth", authRouter);
 app.use("/trainer", trainerRouter);
 

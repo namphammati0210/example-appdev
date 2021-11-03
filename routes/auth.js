@@ -23,7 +23,7 @@ router.post('/login', async (req, res) => {
 
   if(!user) {
     console.log('Incorrect username or password');
-    res.redirect('/auth');
+    return res.redirect('/auth');
   }
 
   req.session.user = user;
