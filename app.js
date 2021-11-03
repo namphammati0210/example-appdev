@@ -36,7 +36,8 @@ app.use(session({
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/admin", verifyAdmin, adminRouter);
+// app.use("/admin", verifyAdmin, adminRouter);
+app.use("/admin", adminRouter);
 app.use("/trainingStaff", trainingStaffRouter);
 app.use("/auth", authRouter);
 app.use("/trainer", trainerRouter);
