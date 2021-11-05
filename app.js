@@ -17,6 +17,7 @@ var authRouter = require("./routes/auth");
 var trainerRouter = require("./routes/trainer");
 const { verifyAdmin } = require('./middlewares/admin_auth');
 const { verifyStaff } = require("./middlewares/staff_auth");
+const { verifyTrainer } = require("./middlewares/trainer_auth");
 var app = express();
 
 // view engine setup
@@ -42,7 +43,7 @@ app.use("/admin", verifyAdmin, adminRouter);
 // app.use("/admin", adminRouter);
 app.use("/trainingStaff", verifyStaff,trainingStaffRouter);
 app.use("/auth", authRouter);
-app.use("/trainer", trainerRouter);
+app.use("/trainer", verifyTrainer, trainerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
